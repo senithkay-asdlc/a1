@@ -1,0 +1,16 @@
+{
+  "name": "ceramics-webapp",
+  "type": "web-application",
+  "version": "0.1.0",
+  "language": "TypeScript",
+  "buildpack": "docker",
+  "appPath": "ceramics-webapp",
+  "entrypoint": "deployment/web-application",
+  "exposure": "internet",
+  "dependencies": [
+    { "kind": "component", "name": "ceramics-api", "description": "Storefront and admin console calls the catalog, cart, checkout, account, and order-management endpoints." },
+    { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app", "description": "Sign-in for customers and the store administrator (Thunder OIDC).", "parameters": { "scopes": "openid profile email" } }
+  ],
+  "description": "React SPA storefront for browsing the ceramics catalog, managing the cart, and completing checkout as a guest or signed-in customer; also hosts a role-gated admin console for catalog and order management. Does not store any data itself — all state lives in ceramics-api.",
+  "skillsApplied": ["react-webapp", "excalidraw-wireframes", "thunder-authentication"]
+}

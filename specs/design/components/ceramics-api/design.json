@@ -1,0 +1,19 @@
+{
+  "name": "ceramics-api",
+  "type": "service",
+  "version": "0.1.0",
+  "language": "Go",
+  "buildpack": "docker",
+  "appPath": "ceramics-api",
+  "entrypoint": "deployment/service",
+  "exposure": "internet",
+  "exposesAPI": { "auth": "end-user-required" },
+  "dependencies": [
+    { "kind": "platform-resource", "name": "ceramics-db", "resourceType": "postgres", "description": "Stores products, categories, carts, orders, addresses, and customer records.", "parameters": { "size": "small" } },
+    { "kind": "platform-resource", "name": "user-auth", "resourceType": "thunder-app", "description": "Validates signed-in customer/administrator identity via the platform gateway.", "parameters": { "scopes": "openid profile email" } },
+    { "kind": "external", "name": "payment-provider", "description": "Charges the shopper's payment method during checkout via the provider's SDK.", "config": [ { "key": "PAYMENT_PROVIDER_API_KEY", "secret": true, "description": "Secret API key for the payment provider" } ] },
+    { "kind": "external", "name": "email-provider", "description": "Sends order confirmation emails after successful checkout via the provider's SDK/API.", "config": [ { "key": "EMAIL_PROVIDER_API_KEY", "secret": true, "description": "API key for the transactional email provider" }, { "key": "EMAIL_FROM_ADDRESS", "description": "From address used for order confirmation emails" } ] }
+  ],
+  "description": "Go API service owning the ceramics product catalog, shopping cart, checkout/order processing, and customer account data in an embedded/managed database. Guest carts are session-scoped; customer carts and order history are tied to the authenticated caller. Charges payments via payment-provider and sends order confirmations via email-provider. Does not render any UI and does not issue its own auth tokens (Thunder does).",
+  "skillsApplied": ["openapi-conventions", "go", "api-management", "thunder-authentication"]
+}
